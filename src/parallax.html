@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Project 1: Parallax</title>
+	<style>
+		body 
+		{
+			background-color: #222222;
+			color: #AAAAAA;
+		}
+	</style>
+	<script src="pixi.js"></script>
+</head>
+<body>
+	<h1>JavaScript Development Project 1: Parallax<h1>
+	<h2>Created by: [Your Name Here]</h2>
+    <script>
+
+	//
+    // DO NOT CHANGE
+    //
+	
+	// Creates a new stage. A stage is used to store your game things
+    // like characters and background images. 0x007FFF is the background
+	// color - this is sky blue.
+    var stage = new PIXI.Stage(0x007FFF);
+	
+    // Creates a new renderer. The renderer is responsible for drawing
+    // things, like characters and backgrounds, to screen.
+    var renderer = PIXI.autoDetectRenderer(1280, 720, null);
+
+    // The renderer is automatically inserted into the web page so that
+    // it may be placed in the center and visible to your user.
+    document.body.appendChild(renderer.view);
+    renderer.view.style.position = "absolute";
+    renderer.view.style.left = ((window.innerWidth - renderer.width) / 2) + "px";
+    renderer.view.style.top = ((window.innerHeight - renderer.height) / 2) + "px";
+
+    // Video games work by repeatedly making small updates to the scene
+    // and then drawing the scene. Game developers refer to this as the
+    // "rendering loop". This line starts the rendering loop.
+	requestAnimFrame(renderLoopIteration);
+
+	// This function creates a sprite using the specified texture as an image.
+	//   texture - the texture to use by the sprite
+	//   screenHeight - the height of the sprite as drawn on the screen
+	//   screenPosY - the y-postion of the sprite as drawn on the screen
+	//   textureHeight - the height of the texture region used by this sprite
+	//   textureScaleX - the amount of stretch applied to the texture
+	//   texturePosY - the y-coordinate of the texture.
+	function loadSprite(texture, screenHeight, screenPosY, textureHeight, texturePosY, textureScaleX) {
+		var sprite = new PIXI.TilingSprite(texture, renderer.width, screenHeight);
+		sprite.tileScale.y = screenHeight / textureHeight;
+		sprite.tileScale.x = textureScaleX;
+		sprite.position.y = screenPosY;
+		sprite.tilePosition.y = texture.height - texturePosY;
+		return sprite;
+	}
+	
+	// This function performs a single iteration of the rendering loop.
+	function renderLoopIteration() {
+	    // This function call triggers a future iteration of the rendering loop.
+	    requestAnimFrame(renderLoopIteration);
+
+		// Your update scene function which is responsible moving around your
+		// objects.
+		animateScene();
+
+	    // Draws your scene to the screen.
+	    renderer.render(stage);
+	}
+	
+	//
+    // YOUR CODE STARTS HERE
+	//
+	
+	// Load your texture here
+	var backgroundTexture = PIXI.Texture.fromImage("background.png");
+	
+	// Create the near and distant mountain and cloud sprites based on your worksheet values.
+	// You will make use of the loadSprite function. Ground is loaded as an example.
+	//   screenHeight: 128, screen y-position: 592, textureHeight: 64, texture y-position: 448
+	var ground = loadSprite(backgroundTexture, 128, 592, 64 , 448, 1.2);
+	
+	// Add your sprites to your stage in the order you specified in your worksheet. ground is provided
+	// as an example of how to add a sprite to the stage.
+	stage.addChild(ground);
+	
+	// Use this function to update the sprite variables you created earlier.
+	function animateScene() {
+		// Specify the movement speed of each of your sprites. Apply the negated speed value from
+		// your worksheet. see the ground example:
+		ground.tilePosition.x -= 8;
+	}
+
+	</script>
+
+	</body>
+</html>
